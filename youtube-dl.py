@@ -57,21 +57,32 @@ def downYoutubePlaylist(url):
         downYoutubeVideoByUrl(video)
 
 def main():
-    args = sys.argv[1:]
+    args = sys.argv
     global output_folder
     if "--help" in args or "-?" in args:
         print("")
-        print("--videos / -v : download all individual videos listed on videos.txt file")
-        print("--playlists / -p : download all individual videos listed on all playlists listed on playlist.txt file")
-    elif "--playlist" in args or "-p" in args:
+        print("#=================================================================================")
+        print(f"{bcolors.HEADER} Youtube downloader (@Marduken 2021) {bcolors.ENDC}")
+        print("#=================================================================================")
+        print("* Parameters: ")
+        print(f"{bcolors.WARNING}--video / -v url{bcolors.ENDC} : download video with url param")
+        print(f"{bcolors.WARNING}--videos-file / -vf{bcolors.ENDC} : download all individual videos listed on 'videos.txt' file")
+        print(f"{bcolors.WARNING}--playlists-file / -pf{bcolors.ENDC} : download all individual videos listed on all playlists listed on 'playlist.txt' file")
+        print("#=================================================================================")
+    elif "--playlist-file" in args or "-pf" in args:
         output_folder = output_folder + "\Playlists"
         lines = readFile("playlists.txt")        
         for line in lines:
             downYoutubePlaylist(line)
-    else:
+    elif "--videos-file" in args or "-vf" in args:
         lines = readFile("videos.txt")
         for line in lines:
             downYoutubeVideoByUrl(line)
+    elif len(args) >= 3 and (args[1] == "--video" or args[1] == "-v"):
+        line = args[2]
+        downYoutubeVideoByUrl(line)
+    else:
+        print("Incorrect parameters! check help using --help or -? parameter")
 
 if __name__ == "__main__":
     main()
